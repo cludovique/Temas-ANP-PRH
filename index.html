@@ -1,53 +1,67 @@
-
-<h2 class="sr-only">Dashboard RAA 2026: 180 trabalhos classificados em 10 temas, com distribuição regional e lista filtrável.</h2>
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAA 2026 — Dashboard PRH-ANP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-.hdr{padding:1.25rem 0 0.75rem;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.25rem}
-.hdr h1{font-size:18px;font-weight:500;color:var(--color-text-primary)}
-.hdr p{font-size:13px;color:var(--color-text-secondary);margin-top:3px}
-.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
-.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px}
-.mc .lbl{font-size:12px;color:var(--color-text-secondary);margin-bottom:3px}
-.mc .val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
-.mc .sub{font-size:11px;color:var(--color-text-tertiary);margin-top:2px}
-.tabs{display:flex;gap:2px;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
-.tab{padding:7px 14px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px}
-.tab.active{color:var(--color-text-primary);font-weight:500;border-bottom-color:#185FA5}
+body{background:#0f0f0f;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:24px;min-height:100vh}
+h1{font-size:18px;font-weight:500;color:#f0f0f0}
+.sub{font-size:13px;color:#888;margin-top:3px}
+.hdr{padding-bottom:16px;border-bottom:0.5px solid #2a2a2a;margin-bottom:20px}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.mc{background:#181818;border-radius:8px;padding:14px 16px}
+.mc .lbl{font-size:12px;color:#888;margin-bottom:4px}
+.mc .val{font-size:24px;font-weight:500;color:#f0f0f0}
+.mc .sub2{font-size:11px;color:#555;margin-top:3px}
+.tabs{display:flex;gap:2px;border-bottom:0.5px solid #2a2a2a;margin-bottom:20px}
+.tab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-0.5px}
+.tab.active{color:#f0f0f0;font-weight:500;border-bottom-color:#4a9eff}
 .panel{display:none}.panel.active{display:block}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.25rem}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.125rem}
-.card h3{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:0.875rem;text-transform:uppercase;letter-spacing:.05em}
-.brow{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:12px}
-.blbl{width:148px;flex-shrink:0;color:var(--color-text-secondary);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
-.btrk{flex:1;height:14px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.card{background:#141414;border:0.5px solid #2a2a2a;border-radius:12px;padding:16px 18px}
+.card h3{font-size:11px;font-weight:500;color:#666;margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.blbl{width:152px;flex-shrink:0;color:#777;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.btrk{flex:1;height:14px;background:#222;border-radius:3px;overflow:hidden}
 .bfil{height:100%;border-radius:3px}
-.bcnt{width:24px;flex-shrink:0;font-weight:500;color:var(--color-text-primary);font-size:12px;text-align:right}
-.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:8px;font-size:11px;color:var(--color-text-secondary)}
+.bcnt{width:26px;flex-shrink:0;font-weight:500;color:#e0e0e0;font-size:12px;text-align:right}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;font-size:11px;color:#888}
 .ldot{width:9px;height:9px;border-radius:2px;flex-shrink:0;display:inline-block;margin-right:3px;vertical-align:middle}
-table.t{width:100%;font-size:12px;border-collapse:collapse;table-layout:fixed}
-table.t th{text-align:left;font-weight:500;font-size:11px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:7px 5px;text-transform:uppercase;letter-spacing:.04em}
-table.t td{padding:7px 5px;color:var(--color-text-primary);border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top;line-height:1.4}
-table.t tr:last-child td{border-bottom:none}
-.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:4px;font-weight:500;white-space:nowrap}
-.bo{background:#E6F1FB;color:#185FA5}.bp{background:#F1EFE8;color:#5F5E5A}
-.scroll{max-height:420px;overflow-y:auto}
-.filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
-.filters select{font-size:12px;padding:5px 8px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary)}
-.info-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:1.25rem;font-size:12px;color:var(--color-text-secondary);line-height:1.6}
-.info-box strong{color:var(--color-text-primary)}
+table{width:100%;font-size:12px;border-collapse:collapse;table-layout:fixed}
+th{text-align:left;font-weight:500;font-size:11px;color:#666;border-bottom:0.5px solid #2a2a2a;padding:8px 6px;text-transform:uppercase;letter-spacing:.04em}
+td{padding:8px 6px;color:#ccc;border-bottom:0.5px solid #1e1e1e;vertical-align:top;line-height:1.4}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;white-space:nowrap}
+.bo{background:#0f2a45;color:#4a9eff}
+.bp{background:#222;color:#888}
+.scroll{max-height:440px;overflow-y:auto}
+.filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.filters select{font-size:12px;padding:6px 10px;border-radius:8px;border:0.5px solid #333;background:#1a1a1a;color:#ccc;cursor:pointer}
+.info-box{background:#161616;border:0.5px solid #2a2a2a;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#777;line-height:1.7}
+.info-box strong{color:#ccc}
+.info-box em{color:#aaa;font-style:italic}
+.desc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:6px}
+.desc-item{padding:10px 12px;border-radius:0 8px 8px 0;background:#1a1a1a}
+.desc-name{font-weight:500;color:#e0e0e0;font-size:12px;margin-bottom:3px}
+.desc-count{font-size:11px;margin-left:4px}
+.desc-text{color:#777;font-size:11px;line-height:1.5}
 </style>
+</head>
+<body>
 
 <div class="hdr">
   <h1>RAA 2026 — Encontro Nacional PRH-ANP</h1>
-  <p>SENAI-CIMATEC, Salvador BA · 19–21 out · 180 trabalhos · 60 PRHs · 30 instituições</p>
+  <p class="sub">SENAI-CIMATEC, Salvador BA · 19–21 out · 180 trabalhos · 60 PRHs · 30 instituições</p>
 </div>
 
 <div class="mets">
-  <div class="mc"><div class="lbl">Total de trabalhos</div><div class="val">180</div><div class="sub">60 PRHs · 30 inst.</div></div>
-  <div class="mc"><div class="lbl">Apresentações orais</div><div class="val">60</div><div class="sub">1 oral por PRH (sorteio)</div></div>
-  <div class="mc"><div class="lbl">Pôsteres</div><div class="val">120</div><div class="sub">2 pôsteres por PRH</div></div>
-  <div class="mc"><div class="lbl">Temas identificados</div><div class="val">10</div><div class="sub">Todos os trabalhos alocados</div></div>
+  <div class="mc"><div class="lbl">Total de trabalhos</div><div class="val">180</div><div class="sub2">60 PRHs · 30 inst.</div></div>
+  <div class="mc"><div class="lbl">Apresentações orais</div><div class="val">60</div><div class="sub2">1 oral por PRH (sorteio)</div></div>
+  <div class="mc"><div class="lbl">Pôsteres</div><div class="val">120</div><div class="sub2">2 pôsteres por PRH</div></div>
+  <div class="mc"><div class="lbl">Temas identificados</div><div class="val">10</div><div class="sub2">Todos os trabalhos alocados</div></div>
 </div>
 
 <div class="tabs">
@@ -67,13 +81,13 @@ table.t tr:last-child td{border-bottom:none}
     </div>
     <div class="card">
       <h3>Distribuição oral × pôster por tema</h3>
-      <div class="legend"><span><span class="ldot" style="background:#185FA5"></span>Oral</span><span><span class="ldot" style="background:#D3D1C7"></span>Pôster</span></div>
-      <div style="position:relative;height:260px"><canvas id="c-modal" role="img" aria-label="Barras empilhadas oral e pôster por tema">Distribuição oral/pôster por tema.</canvas></div>
+      <div class="legend"><span><span class="ldot" style="background:#4a9eff"></span>Oral</span><span><span class="ldot" style="background:#444"></span>Pôster</span></div>
+      <div style="position:relative;height:260px"><canvas id="c-modal"></canvas></div>
     </div>
   </div>
   <div class="card">
     <h3>Descrição dos temas</h3>
-    <div id="tema-desc" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:4px;font-size:12px;line-height:1.5"></div>
+    <div class="desc-grid" id="tema-desc"></div>
   </div>
 </div>
 
@@ -81,7 +95,7 @@ table.t tr:last-child td{border-bottom:none}
   <div class="row2">
     <div class="card">
       <h3>Trabalhos por região</h3>
-      <div style="position:relative;height:220px"><canvas id="c-reg" role="img" aria-label="Barras de trabalhos por região">Trabalhos por região.</canvas></div>
+      <div style="position:relative;height:220px"><canvas id="c-reg"></canvas></div>
     </div>
     <div class="card">
       <h3>Instituições por volume (top 12)</h3>
@@ -91,7 +105,7 @@ table.t tr:last-child td{border-bottom:none}
   <div class="card">
     <h3>Mix de temas por região (top 6 temas)</h3>
     <div class="legend" id="reg-leg"></div>
-    <div style="position:relative;height:260px"><canvas id="c-reg-tema" role="img" aria-label="Temas por região">Temas por região.</canvas></div>
+    <div style="position:relative;height:260px"><canvas id="c-reg-tema"></canvas></div>
   </div>
 </div>
 
@@ -102,7 +116,7 @@ table.t tr:last-child td{border-bottom:none}
     <select id="f-mod" onchange="renderList()"><option value="">Oral e pôster</option><option>Oral</option><option>Pôster</option></select>
   </div>
   <div class="scroll">
-    <table class="t">
+    <table>
       <thead><tr>
         <th style="width:9%">PRH</th>
         <th style="width:42%">Título</th>
@@ -113,22 +127,21 @@ table.t tr:last-child td{border-bottom:none}
       <tbody id="list-body"></tbody>
     </table>
   </div>
-  <div id="list-count" style="font-size:11px;color:var(--color-text-secondary);margin-top:8px"></div>
+  <div id="list-count" style="font-size:11px;color:#555;margin-top:10px"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const TC={
-  "Produção e E&P":"#185FA5",
-  "Geologia, Bacias e Reservatórios":"#378ADD",
-  "Biocombustíveis e Biorrefinaria":"#3B6D11",
-  "Automação, Sensores e IA Aplicada":"#1D9E75",
-  "Hidrogênio":"#BA7517",
-  "Processos Químicos e Catálise":"#993C1D",
-  "Transição Energética e Sustentabilidade":"#5F5E5A",
-  "Captura e Armazenamento de CO₂":"#D85A30",
-  "Estruturas e Engenharia Offshore":"#534AB7",
-  "Energias Renováveis":"#639922"
+  "Produção e E&P":"#4a9eff",
+  "Geologia, Bacias e Reservatórios":"#6db8ff",
+  "Biocombustíveis e Biorrefinaria":"#4caf6e",
+  "Automação, Sensores e IA Aplicada":"#26c98a",
+  "Hidrogênio":"#f0a830",
+  "Processos Químicos e Catálise":"#e06040",
+  "Transição Energética e Sustentabilidade":"#909090",
+  "Captura e Armazenamento de CO₂":"#e07840",
+  "Estruturas e Engenharia Offshore":"#9b7ee8",
+  "Energias Renováveis":"#72b842"
 };
 const TDESC={
   "Produção e E&P":"Upstream: perfuração, fluidos de poço, escoamento multifásico, garantia de escoamento, inibidores de hidratos/incrustação, gestão de reservatório, água produzida, tratamento de gás.",
@@ -184,7 +197,7 @@ const D=[
   {prh:"13/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Sensores piezoelétricos baseados em compósitos PVDF–PZT para monitoramento de fluxo e eficiência energética na indústria de petróleo e gás",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"13/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Emissões de metano na operação de flares sob efeito de ventos cruzados na queima de misturas de gás natural e CO2",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
   {prh:"14/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Gênese dos Depósitos Intraclásticos da Seção Pré-Sal da Bacia de Campos",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
-  {prh:"14/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Ciclicidade e Arquitetura Deposicional de Interações Flúvio-Eólicas do Proterozóico: Heterogeneidades e Comparação com o Registro Fanerozóico",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
+  {prh:"14/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Ciclicidade e Arquitetura Deposicional de Interações Flúvio-Eólicas do Proterozóico",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"14/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Comportamento de basalto amigdaloidal da Fm Torres durante interação rocha-fluido-CO₂ em 40°C e pressões de 150 e 250 bar",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
   {prh:"15/UFPA",inst:"UFPA",regiao:"Norte",titulo:"Traçagem Isotópica (Sr-Nd-Pb) em Depósitos Neógenos da Bacia do Marajó, Margem Equatorial Brasileira",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"15/UFPA",inst:"UFPA",regiao:"Norte",titulo:"Modelagem Digital de Rochas por micro-CT 4D e IA para reduzir incertezas em CCUS: Molhabilidade dinâmica e hidratos",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
@@ -215,9 +228,9 @@ const D=[
   {prh:"23/PUC-RIO",inst:"PUC-RIO",regiao:"Sudeste",titulo:"Microtomografia de raios X aplicada ao escoamento multifásico CO₂–salmoura em arenitos consolidados",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"24/UERJ",inst:"UERJ",regiao:"Sudeste",titulo:"Tecnologias de tratamento da água produzida em operações offshore: prospecção baseada em TRM e AHP",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"24/UERJ",inst:"UERJ",regiao:"Sudeste",titulo:"Biogás e biometano: Potencial energético e desafios de transporte",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"24/UERJ",inst:"UERJ",regiao:"Sudeste",titulo:"Modelagem de incertezas financeiras na produção de SAF a partir do hidroprocessamento de ésteres e ácidos graxos (HEFA): machine learning",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"25/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Avaliação do comportamento e envelhecimento de vedações elastoméricas aplicadas a vasos de pressão para transporte de hidrogênio e metano",modalidade:"Pôster",tema:"Produção e E&P"},
-  {prh:"25/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Membranas Mistas (PSf + resíduo de scheelita) para tratamento de água produzida (separação óleo-água) no setor de petróleo e gás",modalidade:"Oral",tema:"Produção e E&P"},
+  {prh:"24/UERJ",inst:"UERJ",regiao:"Sudeste",titulo:"Modelagem de incertezas financeiras na produção de SAF a partir do hidroprocessamento de ésteres e ácidos graxos (HEFA)",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
+  {prh:"25/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Avaliação do comportamento e envelhecimento de vedações elastoméricas para transporte de hidrogênio e metano",modalidade:"Pôster",tema:"Produção e E&P"},
+  {prh:"25/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Membranas Mistas para tratamento de água produzida (separação óleo-água) no setor de petróleo e gás",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"25/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Manipulador robótico para reconhecimento e movimentação de objetos em operações de exploração e produção de petróleo e gás",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"26/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Aplicação do método FAWAG para recuperação de petróleo em reservatórios carbonáticos",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"26/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Sistemas redox para baterias de fluxo baseados em materiais carbonáceos: transição energética",modalidade:"Oral",tema:"Transição Energética e Sustentabilidade"},
@@ -239,7 +252,7 @@ const D=[
   {prh:"31/UFC",inst:"UFC",regiao:"Nordeste",titulo:"Modelagem Estrutural Assistida por IA de uma Região das Águas Profundas da Bacia Potiguar",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"32/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Modelagem computacional do processo de fundição de válvulas globo aplicadas à indústria de óleo e gás",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"32/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Síntese de zeólitas e inserção de heteroátomos usando líquidos iônicos para adsorção de CO2",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
-  {prh:"32/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Efeito da dopagem nos sítios A e B nas propriedades estruturais e ópticas da perovskita CsPbI3 para aplicação fotovoltaica",modalidade:"Pôster",tema:"Energias Renováveis"},
+  {prh:"32/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Efeito da dopagem nos sítios A e B nas propriedades da perovskita CsPbI3 para aplicação fotovoltaica",modalidade:"Pôster",tema:"Energias Renováveis"},
   {prh:"33/USP",inst:"USP",regiao:"Sudeste",titulo:"Impacto dos royalties e participação especial de petróleo e gás sobre indicadores socioeconômicos no Nordeste do Brasil",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"33/USP",inst:"USP",regiao:"Sudeste",titulo:"Política Industrial para uma Indústria Brasileira de Veículos Elétricos e os Exemplos do Planejamento do Leste Asiático",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"33/USP",inst:"USP",regiao:"Sudeste",titulo:"Comportamento termo-hidro-mecânico dos basaltos da Formação Serra Geral durante interação com fluidos enriquecidos em CO2: Bacia do Paraná",modalidade:"Oral",tema:"Captura e Armazenamento de CO₂"},
@@ -247,23 +260,23 @@ const D=[
   {prh:"34/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Avaliação de Resiliência de Sistemas de Transporte de Gás Natural",modalidade:"Pôster",tema:"Produção e E&P"},
   {prh:"34/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Digitalização e redes inteligentes como agentes de transformação na transição energética do setor de petróleo e gás",modalidade:"Oral",tema:"Transição Energética e Sustentabilidade"},
   {prh:"35/UFPB",inst:"UFPB",regiao:"Nordeste",titulo:"Estudo Experimental e Modelagem de Armazenamento Térmico em Leito Empacotado de Pedras/Tijolos",modalidade:"Pôster",tema:"Energias Renováveis"},
-  {prh:"35/UFPB",inst:"UFPB",regiao:"Nordeste",titulo:"Bioeconomia circular e ecologia industrial no setor sucroenergético brasileiro: rotas tecnológicas para a sustentabilidade",modalidade:"Oral",tema:"Transição Energética e Sustentabilidade"},
+  {prh:"35/UFPB",inst:"UFPB",regiao:"Nordeste",titulo:"Bioeconomia circular e ecologia industrial no setor sucroenergético brasileiro",modalidade:"Oral",tema:"Transição Energética e Sustentabilidade"},
   {prh:"35/UFPB",inst:"UFPB",regiao:"Nordeste",titulo:"Efeitos geomecânicos em falhas geológicas para cenários de armazenamento de CO2 e cavidades em rochas salinas",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
   {prh:"36/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Microemulsões biodegradáveis na redução de óleos e graxas em água produzida da indústria do petróleo",modalidade:"Pôster",tema:"Produção e E&P"},
-  {prh:"36/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Estratigrafia Química aplicada às rochas geradoras da Bacia do Ceará — Carbono Orgânico Total (COT) e Pirólise de Rock Eval",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
+  {prh:"36/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Estratigrafia Química aplicada às rochas geradoras da Bacia do Ceará — COT e Pirólise de Rock Eval",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"36/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Dinâmica do Carbono Azul em áreas de manguezal impactadas por petróleo: Soluções Baseadas na Natureza",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"37/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Desenvolvimento e Caracterização de Materiais Mesoporosos para Aplicação no Processo HEFA",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"37/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Transição Energética na Aviação: Catalisadores Bifuncionais de Ni/Hidroxiapatita para SAF via Rota HEFA de Óleos Residuais",modalidade:"Oral",tema:"Biocombustíveis e Biorrefinaria"},
+  {prh:"37/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Transição Energética na Aviação: Catalisadores Bifuncionais de Ni/Hidroxiapatita para SAF via Rota HEFA",modalidade:"Oral",tema:"Biocombustíveis e Biorrefinaria"},
   {prh:"37/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Conversão catalítica de glicerol em Álcool Alílico utilizando catalisadores heterogêneos à base de óxidos metálicos",modalidade:"Pôster",tema:"Processos Químicos e Catálise"},
   {prh:"38/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Modelagem e resolução de problemas de confiabilidade na indústria de energia por meio de abordagens quânticas",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
-  {prh:"38/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Simulação para otimização de processos na indústria de óleo e gás: logístico de petroquímica e armazenamento de nafta em refinaria",modalidade:"Oral",tema:"Produção e E&P"},
+  {prh:"38/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Simulação para otimização de processos na indústria de óleo e gás: logístico de petroquímica e armazenamento de nafta",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"38/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Identificação de Hotspots de Energia de Correntes no Atlântico Tropical Sudoeste",modalidade:"Pôster",tema:"Energias Renováveis"},
   {prh:"39/UFSCAR",inst:"UFSCAR",regiao:"Sudeste",titulo:"Semicondutores g-C3N4 modificados com Cu e Ni para produção de hidrogênio verde (H2V)",modalidade:"Pôster",tema:"Hidrogênio"},
   {prh:"39/UFSCAR",inst:"UFSCAR",regiao:"Sudeste",titulo:"Efeito de agentes de ativação na geração de oxo-cátions Cu2+ em zeólitas para oxidação direta do metano a metanol",modalidade:"Oral",tema:"Processos Químicos e Catálise"},
   {prh:"39/UFSCAR",inst:"UFSCAR",regiao:"Sudeste",titulo:"Obtenção de Micro e Nanofibras de Bagaço de Cana-de-Açúcar para Produção de Membranas para Filtração de Ar",modalidade:"Pôster",tema:"Processos Químicos e Catálise"},
-  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Influência do Lineamento Tietê na Porção Centro-Norte da Bacia de Santos — dados sísmicos, sensoriamento remoto e métodos potenciais",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
-  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Avaliação de Rochas Geradoras de Hidrocarbonetos: XRF, Raios Gama e Estatística Multivariada da Formação Irati, Bacia do Paraná",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
-  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Monitoramento ambiental e simulações hidrológicas de áreas úmidas em região de produção de cana-de-açúcar com dados LiDAR em drone",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
+  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Influência do Lineamento Tietê na Porção Centro-Norte da Bacia de Santos — dados sísmicos e sensoriamento remoto",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
+  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Avaliação de Rochas Geradoras de Hidrocarbonetos: XRF, Raios Gama e Estatística Multivariada da Formação Irati",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
+  {prh:"40/UNESP",inst:"UNESP",regiao:"Sudeste",titulo:"Monitoramento ambiental e simulações hidrológicas de áreas úmidas em região de produção de cana-de-açúcar",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"41/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Modelagem e estudo experimental do processo de adsorção por modulação de corrente elétrica (ESA) para beneficiamento do gás natural",modalidade:"Pôster",tema:"Produção e E&P"},
   {prh:"41/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Análise de Padrões de Escoamento Multifásico em Sistemas Core-Flow usando Fluidodinâmica Computacional",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"41/UFBA",inst:"UFBA",regiao:"Nordeste",titulo:"Otimização de um Campo de Produção de Petróleo operado por Bombas Centrífugas Submersas com modelos substitutos",modalidade:"Pôster",tema:"Produção e E&P"},
@@ -272,16 +285,16 @@ const D=[
   {prh:"42/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Modelagem física do desenvolvimento de falhas em bacias sedimentares com influência de estruturas herdadas do embasamento",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"43/USP",inst:"USP",regiao:"Sudeste",titulo:"Palinologia do Andar Alagoas na Serra do Tona, Bacia do Tucano Norte: Bioestratigrafia e Paleoambiente",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"43/USP",inst:"USP",regiao:"Sudeste",titulo:"Upper crustal boundary conditions in the hydrocarbon generation imposed by the Andes Orogenesis",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
-  {prh:"43/USP",inst:"USP",regiao:"Sudeste",titulo:"Influência do intemperismo em indicadores de proveniência sedimentar no Mioceno da Bacia do Acre — Bacia do Solimões e Amazonas",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
+  {prh:"43/USP",inst:"USP",regiao:"Sudeste",titulo:"Influência do intemperismo em indicadores de proveniência sedimentar no Mioceno da Bacia do Acre",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"44/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Engenharia de eletrodos Ni-Co para Eletro-refinaria de lignina acoplada à produção de Hidrogênio Verde",modalidade:"Pôster",tema:"Hidrogênio"},
-  {prh:"44/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Desgaste triboquímico de agulhas dos bicos injetores em motores diesel operando com biodiesel aditivado com nanopartículas de óxido de cobre",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"44/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Síntese de membranas poliméricas de acetato de celulose a partir da fibra da casca do coco verde para separação de CO2 do gás natural",modalidade:"Oral",tema:"Captura e Armazenamento de CO₂"},
+  {prh:"44/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Desgaste triboquímico de agulhas dos bicos injetores em motores diesel operando com biodiesel aditivado com nanopartículas",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
+  {prh:"44/UFRN",inst:"UFRN",regiao:"Nordeste",titulo:"Síntese de membranas poliméricas de acetato de celulose para separação de CO2 do gás natural",modalidade:"Oral",tema:"Captura e Armazenamento de CO₂"},
   {prh:"45/UFSC",inst:"UFSC",regiao:"Sul",titulo:"Mecanismo de Locomoção Robotizado Para Inspeção Interna de Dutos em Unidades Offshore",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"45/UFSC",inst:"UFSC",regiao:"Sul",titulo:"Análise Não Intrusiva de Escoamentos Multifásicos Guiado por Métodos de Inteligência Artificial",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
-  {prh:"45/UFSC",inst:"UFSC",regiao:"Sul",titulo:"Otimização de Eletrolisadores de Membrana de Troca de Prótons para Produção de Hidrogênio Verde a Altas Densidades de Corrente e Elevadas Pressões",modalidade:"Oral",tema:"Hidrogênio"},
+  {prh:"45/UFSC",inst:"UFSC",regiao:"Sul",titulo:"Otimização de Eletrolisadores de Membrana de Troca de Prótons para Produção de Hidrogênio Verde a Altas Densidades de Corrente",modalidade:"Oral",tema:"Hidrogênio"},
   {prh:"46/UNIFEI",inst:"UNIFEI",regiao:"Sudeste",titulo:"Intensificação da produção de bioenergia por fermentação escura de águas residuárias",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"46/UNIFEI",inst:"UNIFEI",regiao:"Sudeste",titulo:"Sistema de Análise Preditiva em Tempo Real para Smart Meters com Monitoramento Não Intrusivo de Cargas (NILM) via Redes Neurais Convolucionais em Edge",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
-  {prh:"46/UNIFEI",inst:"UNIFEI",regiao:"Sudeste",titulo:"Produção de Hidrogênio a partir da Vinhaça de Etanol: Avaliação Técnico-Econômica e Ambiental de Rotas Integradas para Síntese de Metanol",modalidade:"Oral",tema:"Hidrogênio"},
+  {prh:"46/UNIFEI",inst:"UNIFEI",regiao:"Sudeste",titulo:"Sistema de Análise Preditiva em Tempo Real para Smart Meters com Monitoramento Não Intrusivo de Cargas (NILM) via Redes Neurais",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
+  {prh:"46/UNIFEI",inst:"UNIFEI",regiao:"Sudeste",titulo:"Produção de Hidrogênio a partir da Vinhaça de Etanol: Avaliação Técnico-Econômica de Rotas Integradas para Síntese de Metanol",modalidade:"Oral",tema:"Hidrogênio"},
   {prh:"47/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Correlação óleo-betume de potenciais rochas geradoras na Bacia do Rio do Peixe",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"47/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Viabilidade de estocagem geológica de H2 em cavernas salinas onshore na Bacia de Sergipe",modalidade:"Oral",tema:"Hidrogênio"},
   {prh:"47/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Análise estrutural do segmento leste da Falha de Ibimirim",modalidade:"Pôster",tema:"Geologia, Bacias e Reservatórios"},
@@ -289,9 +302,9 @@ const D=[
   {prh:"48/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Metanização biológica do CO2 como rota de purificação do biogás e produção de biometano",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
   {prh:"48/UFPE",inst:"UFPE",regiao:"Nordeste",titulo:"Análise do impacto das bandas de deformação na qualidade de reservatórios siliciclásticos: porosidade 2D e 3D",modalidade:"Oral",tema:"Geologia, Bacias e Reservatórios"},
   {prh:"49/UFABC",inst:"UFABC",regiao:"Sudeste",titulo:"Valorization of terpenes through catalytic isomerization using sulfonated carbon as a sustainable catalyst",modalidade:"Oral",tema:"Processos Químicos e Catálise"},
-  {prh:"49/UFABC",inst:"UFABC",regiao:"Sudeste",titulo:"Papel dos módulos miRNA–gene alvo na comunicação entre produção de biomassa e déficit hídrico na Poaceae modelo Setaria italica",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
+  {prh:"49/UFABC",inst:"UFABC",regiao:"Sudeste",titulo:"Papel dos módulos miRNA–gene alvo na comunicação entre produção de biomassa e déficit hídrico na Poaceae modelo",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"49/UFABC",inst:"UFABC",regiao:"Sudeste",titulo:"Estudo de espaçadores arílicos na formação de perovskitas 2D|3D para conversão de energia solar",modalidade:"Pôster",tema:"Energias Renováveis"},
-  {prh:"50/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Hidrogenação seletiva de CO2 utilizando catalisadores de rutênio e líquidos iônicos básicos como aditivos de reação",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
+  {prh:"50/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Hidrogenação seletiva de CO2 utilizando catalisadores de rutênio e líquidos iônicos básicos",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
   {prh:"50/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Desenvolvimento de materiais nanoporosos a partir de resíduos (agro)industriais contendo sílica",modalidade:"Pôster",tema:"Processos Químicos e Catálise"},
   {prh:"50/UFRGS",inst:"UFRGS",regiao:"Sul",titulo:"Avaliação da recuperação de lítio em águas de produção empregando sistemas magnéticos",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"51/USP",inst:"USP",regiao:"Sudeste",titulo:"Recuperação de metais críticos presentes em painéis fotovoltaicos",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
@@ -305,20 +318,20 @@ const D=[
   {prh:"53/UFES",inst:"UFES",regiao:"Sudeste",titulo:"Desenvolvimento de nanopartículas inorgânicas como potenciais aditivos para fluidos de perfuração",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"54/UFMA",inst:"UFMA",regiao:"Nordeste",titulo:"Esponjas superhidrofóbicas fabricadas a partir de SiO2-fibras de PET para separação de óleos da indústria de petróleo e gás",modalidade:"Pôster",tema:"Produção e E&P"},
   {prh:"54/UFMA",inst:"UFMA",regiao:"Nordeste",titulo:"Avaliação da influência de bioaditivos antioxidantes na estabilidade oxidativa do biodiesel durante o armazenamento",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"54/UFMA",inst:"UFMA",regiao:"Nordeste",titulo:"Previsão do preço spot no mercado de energia elétrica de sistemas híbridos de baixo carbono via IA e aprendizagem profunda",modalidade:"Oral",tema:"Automação, Sensores e IA Aplicada"},
+  {prh:"54/UFMA",inst:"UFMA",regiao:"Nordeste",titulo:"Previsão do preço spot no mercado de energia elétrica de sistemas híbridos de baixo carbono via IA",modalidade:"Oral",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"55/UFERSA",inst:"UFERSA",regiao:"Nordeste",titulo:"Utilização de água produzida do petróleo na irrigação de sorgo sacarino e sorgo biomassa para produção de bioenergia",modalidade:"Pôster",tema:"Transição Energética e Sustentabilidade"},
   {prh:"55/UFERSA",inst:"UFERSA",regiao:"Nordeste",titulo:"Reúso de água produzida para irrigação de cultivos bioenergéticos como estratégia de descarbonização de operadores onshore",modalidade:"Oral",tema:"Transição Energética e Sustentabilidade"},
   {prh:"55/UFERSA",inst:"UFERSA",regiao:"Nordeste",titulo:"Pirólise da casca da castanha de caju: otimização do processo e potencial para bioenergia e economia de baixo carbono",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
-  {prh:"56/UFAL",inst:"UFAL",regiao:"Nordeste",titulo:"Modelagem Preditiva do Desgaste de Brocas de Perfuração por Meio de Algoritmos de Machine Learning e Parâmetros Operacionais",modalidade:"Oral",tema:"Automação, Sensores e IA Aplicada"},
-  {prh:"56/UFAL",inst:"UFAL",regiao:"Nordeste",titulo:"Abordagem Baseada em Explicabilidade Para Avaliação de Modelos de ML no Monitoramento de Integridade Estrutural de Poços de Petróleo",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
+  {prh:"56/UFAL",inst:"UFAL",regiao:"Nordeste",titulo:"Modelagem Preditiva do Desgaste de Brocas de Perfuração por Meio de Algoritmos de Machine Learning",modalidade:"Oral",tema:"Automação, Sensores e IA Aplicada"},
+  {prh:"56/UFAL",inst:"UFAL",regiao:"Nordeste",titulo:"Abordagem Baseada em Explicabilidade Para Avaliação de Modelos de ML no Monitoramento de Integridade Estrutural de Poços",modalidade:"Pôster",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"56/UFAL",inst:"UFAL",regiao:"Nordeste",titulo:"Modelagem Numérica da Cravação de Revestimento Condutor em Solo Marinho por meio do Método dos Pontos Materiais (MPM)",modalidade:"Pôster",tema:"Estruturas e Engenharia Offshore"},
   {prh:"57/UNB",inst:"UNB",regiao:"Centro-Oeste",titulo:"Geração de Dados Sintéticos por Simulação Numérica para o Estudo de Anomalias em Garantia de Escoamento",modalidade:"Oral",tema:"Automação, Sensores e IA Aplicada"},
   {prh:"57/UNB",inst:"UNB",regiao:"Centro-Oeste",titulo:"Análise Numérica dos Efeitos Macroscópicos do Escoamento no Transporte de CO2 em Membranas Perovskita",modalidade:"Pôster",tema:"Captura e Armazenamento de CO₂"},
-  {prh:"57/UNB",inst:"UNB",regiao:"Centro-Oeste",titulo:"Modelagem cinético-estequiométrica da formação de voláteis na torrefação de biomassa para gêmeos digitais e sistemas BECCS carbono-negativos",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
+  {prh:"57/UNB",inst:"UNB",regiao:"Centro-Oeste",titulo:"Modelagem cinético-estequiométrica da formação de voláteis na torrefação de biomassa para gêmeos digitais e sistemas BECCS",modalidade:"Pôster",tema:"Biocombustíveis e Biorrefinaria"},
   {prh:"58/UFS",inst:"UFS",regiao:"Nordeste",titulo:"Sistema de bancada para avaliação da eficiência de sequestrante a base de ureia na dessulfurização de gás natural",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"58/UFS",inst:"UFS",regiao:"Nordeste",titulo:"Eletrocatalisadores bifuncionais baseados em hidróxidos duplos lamelares para produção fotoassistida de hidrogênio verde",modalidade:"Pôster",tema:"Hidrogênio"},
   {prh:"58/UFS",inst:"UFS",regiao:"Nordeste",titulo:"Eficiência do biocarvão como eletrocatalisador na produção de hidrogênio verde por eletrólise da água produzida",modalidade:"Pôster",tema:"Hidrogênio"},
-  {prh:"59/UFPI",inst:"UFPI",regiao:"Nordeste",titulo:"Membranas microporosas de polímeros biodegradáveis aditivadas com óxido de titânio e cera de abelha para tratamento de emulsões óleo-em-água",modalidade:"Pôster",tema:"Produção e E&P"},
+  {prh:"59/UFPI",inst:"UFPI",regiao:"Nordeste",titulo:"Membranas microporosas de polímeros biodegradáveis para tratamento de emulsões óleo-em-água",modalidade:"Pôster",tema:"Produção e E&P"},
   {prh:"59/UFPI",inst:"UFPI",regiao:"Nordeste",titulo:"Análise de Sensibilidade e Risco Probabilístico Aplicada à Estabilidade de Poços de Petróleo",modalidade:"Oral",tema:"Produção e E&P"},
   {prh:"59/UFPI",inst:"UFPI",regiao:"Nordeste",titulo:"Avaliação da degradação de compósitos poliméricos biodegradáveis em condições subterrâneas para fraturamento hidráulico",modalidade:"Pôster",tema:"Produção e E&P"},
   {prh:"60/UFPA",inst:"UFPA",regiao:"Norte",titulo:"Análise numérica de um sistema off-grid híbrido solar-hidrocinético utilizando o software HOMER",modalidade:"Oral",tema:"Energias Renováveis"},
@@ -334,7 +347,7 @@ window.show=name=>{
   document.getElementById('tab-'+name).classList.add('active');
 };
 
-function renderTemaBarsOrdered(){
+function renderTemaBars(){
   const el=document.getElementById('tema-bars');
   const sorted=TEMAS.map(t=>({t,n:D.filter(d=>d.tema===t).length})).sort((a,b)=>b.n-a.n);
   const max=sorted[0].n;
@@ -344,9 +357,9 @@ function renderTemaBarsOrdered(){
 function renderTemaDesc(){
   const el=document.getElementById('tema-desc');
   el.innerHTML=TEMAS.map(t=>`
-    <div style="padding:8px 10px;border-left:3px solid ${TC[t]};background:var(--color-background-secondary);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0">
-      <div style="font-weight:500;color:var(--color-text-primary);font-size:12px;margin-bottom:3px">${t} <span style="color:${TC[t]};font-size:11px">(${D.filter(d=>d.tema===t).length} trab.)</span></div>
-      <div style="color:var(--color-text-secondary);font-size:11px;line-height:1.5">${TDESC[t]}</div>
+    <div class="desc-item" style="border-left:3px solid ${TC[t]}">
+      <div class="desc-name">${t} <span class="desc-count" style="color:${TC[t]}">(${D.filter(d=>d.tema===t).length} trab.)</span></div>
+      <div class="desc-text">${TDESC[t]}</div>
     </div>`).join('');
 }
 
@@ -355,7 +368,7 @@ function renderInstBars(){
   const m={};D.forEach(d=>{m[d.inst]=(m[d.inst]||0)+1});
   const s=Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,12);
   const max=s[0][1];
-  el.innerHTML=s.map(([inst,n])=>`<div class="brow"><div class="blbl">${inst}</div><div class="btrk"><div class="bfil" style="width:${Math.round(n/max*100)}%;background:#185FA5"></div></div><div class="bcnt">${n}</div></div>`).join('');
+  el.innerHTML=s.map(([inst,n])=>`<div class="brow"><div class="blbl">${inst}</div><div class="btrk"><div class="bfil" style="width:${Math.round(n/max*100)}%;background:#4a9eff"></div></div><div class="bcnt">${n}</div></div>`).join('');
 }
 
 function renderList(){
@@ -364,14 +377,13 @@ function renderList(){
   const fm=document.getElementById('f-mod').value;
   const f=D.filter(d=>(!ft||d.tema===ft)&&(!fr||d.regiao===fr)&&(!fm||d.modalidade===fm));
   const body=document.getElementById('list-body');
-  body.innerHTML=f.map(d=>`
-    <tr>
-      <td>${d.prh}</td>
-      <td style="font-size:11px">${d.titulo}</td>
-      <td><span style="font-size:10px;padding:2px 5px;border-radius:3px;background:${TC[d.tema]}20;color:${TC[d.tema]};font-weight:500;border:0.5px solid ${TC[d.tema]}40">${d.tema}</span></td>
-      <td style="font-size:11px">${d.regiao}</td>
-      <td><span class="badge ${d.modalidade==='Oral'?'bo':'bp'}">${d.modalidade}</span></td>
-    </tr>`).join('');
+  body.innerHTML=f.map(d=>`<tr>
+    <td>${d.prh}</td>
+    <td style="font-size:11px">${d.titulo}</td>
+    <td><span style="font-size:10px;padding:2px 6px;border-radius:3px;background:${TC[d.tema]}22;color:${TC[d.tema]};font-weight:500;border:0.5px solid ${TC[d.tema]}55">${d.tema}</span></td>
+    <td style="font-size:11px">${d.regiao}</td>
+    <td><span class="badge ${d.modalidade==='Oral'?'bo':'bp'}">${d.modalidade}</span></td>
+  </tr>`).join('');
   document.getElementById('list-count').textContent=`${f.length} de 180 trabalhos`;
 }
 
@@ -379,50 +391,50 @@ function populateFilters(){
   const ft=document.getElementById('f-tema');
   TEMAS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;ft.appendChild(o)});
   const regs=[...new Set(D.map(d=>d.regiao))].sort();
-  const fr=document.getElementById('f-reg');
-  regs.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;fr.appendChild(o)});
+  document.getElementById('f-reg').innerHTML='<option value="">Todas as regiões</option>'+regs.map(r=>`<option>${r}</option>`).join('');
 }
 
-renderTemaBarsOrdered();
+renderTemaBars();
 renderTemaDesc();
 renderInstBars();
 populateFilters();
 renderList();
 
+const gridColor='rgba(255,255,255,0.06)';
+const tickColor='#666';
+
 new Chart(document.getElementById('c-reg'),{
   type:'bar',
-  data:{labels:['Sudeste','Nordeste','Sul','Norte','Centro-Oeste'],datasets:[{label:'Trabalhos',data:[78,60,30,6,3],backgroundColor:['#185FA5','#D85A30','#3B6D11','#1D9E75','#BA7517'],borderRadius:4}]},
+  data:{labels:['Sudeste','Nordeste','Sul','Norte','Centro-Oeste'],datasets:[{data:[78,60,30,6,3],backgroundColor:['#4a9eff','#e07840','#4caf6e','#26c98a','#f0a830'],borderRadius:4}]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{grid:{display:false},ticks:{color:'#888',font:{size:11}}},y:{grid:{color:'rgba(128,128,128,.12)'},ticks:{color:'#888'}}}}
+    scales:{x:{grid:{display:false},ticks:{color:tickColor}},y:{grid:{color:gridColor},ticks:{color:tickColor}}}}
 });
 
 const temasTop6=['Produção e E&P','Geologia, Bacias e Reservatórios','Hidrogênio','Biocombustíveis e Biorrefinaria','Automação, Sensores e IA Aplicada','Captura e Armazenamento de CO₂'];
 const tc6=temasTop6.map(t=>TC[t]);
 const regLabels=['Sudeste','Nordeste','Sul','Norte','Centro-Oeste'];
-const regDatasets=temasTop6.map((t,i)=>({
-  label:t.split(',')[0].split(' e ')[0],
-  data:regLabels.map(r=>D.filter(d=>d.regiao===r&&d.tema===t).length),
-  backgroundColor:tc6[i],borderRadius:2
-}));
 new Chart(document.getElementById('c-reg-tema'),{
-  type:'bar',data:{labels:regLabels,datasets:regDatasets},
+  type:'bar',
+  data:{labels:regLabels,datasets:temasTop6.map((t,i)=>({
+    label:t,data:regLabels.map(r=>D.filter(d=>d.regiao===r&&d.tema===t).length),backgroundColor:tc6[i],borderRadius:2
+  }))},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#888',font:{size:11}}},y:{stacked:true,grid:{color:'rgba(128,128,128,.12)'},ticks:{color:'#888'}}}}
+    scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor}},y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor}}}}
 });
 document.getElementById('reg-leg').innerHTML=temasTop6.map((t,i)=>`<span><span class="ldot" style="background:${tc6[i]}"></span>${t.split(',')[0].split(' e ')[0]}</span>`).join('');
 
-const temasChart=['Prod.\nE&P','Geol.\nBacias','Biocomb.','Autom.\nIA','Hidrog.','Proc.\nQuím.','Transição\nEnerg.','Captura\nCO₂','Offshore','En.\nRenov.'];
-const temasChartFull=['Produção e E&P','Geologia, Bacias e Reservatórios','Biocombustíveis e Biorrefinaria','Automação, Sensores e IA Aplicada','Hidrogênio','Processos Químicos e Catálise','Transição Energética e Sustentabilidade','Captura e Armazenamento de CO₂','Estruturas e Engenharia Offshore','Energias Renováveis'];
-const oralD=temasChartFull.map(t=>D.filter(d=>d.tema===t&&d.modalidade==='Oral').length);
-const postD=temasChartFull.map(t=>D.filter(d=>d.tema===t&&d.modalidade==='Pôster').length);
+const tLabels=['Prod.\nE&P','Geol.\nBacias','Biocomb.','Autom.\nIA','Hidrog.','Proc.\nQuím.','Transição','Captura\nCO₂','Offshore','En.\nRenov.'];
+const tFull=['Produção e E&P','Geologia, Bacias e Reservatórios','Biocombustíveis e Biorrefinaria','Automação, Sensores e IA Aplicada','Hidrogênio','Processos Químicos e Catálise','Transição Energética e Sustentabilidade','Captura e Armazenamento de CO₂','Estruturas e Engenharia Offshore','Energias Renováveis'];
 new Chart(document.getElementById('c-modal'),{
   type:'bar',
-  data:{labels:temasChart,datasets:[
-    {label:'Oral',data:oralD,backgroundColor:'#185FA5',borderRadius:2},
-    {label:'Pôster',data:postD,backgroundColor:'#D3D1C7',borderRadius:2}
+  data:{labels:tLabels,datasets:[
+    {label:'Oral',data:tFull.map(t=>D.filter(d=>d.tema===t&&d.modalidade==='Oral').length),backgroundColor:'#4a9eff',borderRadius:2},
+    {label:'Pôster',data:tFull.map(t=>D.filter(d=>d.tema===t&&d.modalidade==='Pôster').length),backgroundColor:'#444',borderRadius:2}
   ]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-    scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#888',font:{size:9},maxRotation:0}},
-            y:{stacked:true,grid:{color:'rgba(128,128,128,.12)'},ticks:{color:'#888'}}}}
+    scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor,font:{size:9},maxRotation:0}},
+            y:{stacked:true,grid:{color:gridColor},ticks:{color:tickColor}}}}
 });
 </script>
+</body>
+</html>
